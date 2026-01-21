@@ -20,19 +20,27 @@
 如果您想自己编译修改代码：
 
 1.  安装 [**.NET SDK 8.0**](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)。
-2.  进入 `UnityProxyLauncher` 目录。
+2.  进入项目根目录。
 3.  运行项目：
     ```bash
-    dotnet run
+    dotnet run --project src/GlobalUnityInstaller/GlobalUnityInstaller.csproj
     ```
-4.  发布独立运行包 (无需用户安装 .NET 环境):
+4.  构建发布:
     ```bash
     # Windows
-    dotnet publish -c Release -r win-x64 --self-contained
+    dotnet publish src/GlobalUnityInstaller/GlobalUnityInstaller.csproj -c Release -r win-x64 --self-contained -p:PublishSingleFile=true
 
-    # macOS
-    dotnet publish -c Release -r osx-x64 --self-contained
+    # macOS (Intel)
+    dotnet publish src/GlobalUnityInstaller/GlobalUnityInstaller.csproj -c Release -r osx-x64 --self-contained
+
+    # macOS (Apple Silicon)
+    dotnet publish src/GlobalUnityInstaller/GlobalUnityInstaller.csproj -c Release -r osx-arm64 --self-contained
+
+    # Linux
+    dotnet publish src/GlobalUnityInstaller/GlobalUnityInstaller.csproj -c Release -r linux-x64 --self-contained
     ```
+    > 构建产物默认位于 `src/GlobalUnityInstaller/bin/Release/net8.0/<RID>/publish/` 目录下。
+    > 你也可以通过 `-o <OutputDirectory>` 参数指定输出目录。
 
 ## 使用方法
 

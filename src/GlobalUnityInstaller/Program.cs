@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.ReactiveUI;
 using System;
 
-namespace UnityProxyLauncher
+namespace GlobalUnityInstaller
 {
     internal class Program
     {

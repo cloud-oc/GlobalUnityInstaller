@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 
-namespace UnityProxyLauncher
+namespace GlobalUnityInstaller
 {
     public partial class App : Application
     {

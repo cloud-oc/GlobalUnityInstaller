@@ -6,7 +6,7 @@
         Width="450" Height="550"
         CanResize="False"
         WindowStartupLocation="CenterScreen"
-        x:Class="UnityProxyLauncher.MainWindow"
+        x:Class="GlobalUnityInstaller.MainWindow"
         Title="GlobalUnityInstaller"
         Background="#1e1e1e">
 
@@ -18,8 +18,8 @@
         <StackPanel Grid.Row="1" Spacing="10" Margin="0,0,0,20">
             <Label Content="Unity Hub 路径" Foreground="#aaaaaa" FontSize="12"/>
             <Grid ColumnDefinitions="*, 10, Auto">
-                <TextBox Grid.Column="0" Name="PathTextBox" Watermark="正在自动查找..." IsReadOnly="True" />
-                <Button Grid.Column="2" Name="SelectPathButton" Content="选择文件夹" />
+                <TextBox Grid.Column="0" Name="TxtUnityPath" Watermark="正在自动查找..." IsReadOnly="True" />
+                <Button Grid.Column="2" Name="BtnBrowse" Content="选择文件夹" />
             </Grid> 
             <TextBlock Text="留空则自动查找，或点击按钮手动选择" Foreground="#666666" FontSize="11" />
         </StackPanel>
@@ -27,22 +27,22 @@
         <!-- Proxy Config -->
         <StackPanel Grid.Row="2" Spacing="8" Margin="0,0,0,15">
             <Label Content="HTTP 代理端口" Foreground="#aaaaaa" FontSize="12"/>
-            <TextBox Name="HttpPortTextBox" Watermark="例如: 7890" />
+            <TextBox Name="TxtHttpPort" Watermark="例如: 7890" />
         </StackPanel>
 
         <StackPanel Grid.Row="3" Spacing="8" Margin="0,0,0,30">
             <Label Content="SOCKS5 代理端口" Foreground="#aaaaaa" FontSize="12"/>
-            <TextBox Name="SocksPortTextBox" Watermark="例如: 1080" />
+            <TextBox Name="TxtSocksPort" Watermark="例如: 1080" />
         </StackPanel>
 
         <!-- Actions -->
-        <Button Grid.Row="4" Name="LaunchButton" Content="🚀 启动 Unity Hub" 
+        <Button Grid.Row="4" Name="BtnLaunch" Content="🚀 启动 Unity Hub" 
                 HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
                 Background="#2e7d32" Foreground="White" FontSize="16" Height="45" />
 
         <!-- Status Bar -->
-        <Border Grid.Row="5" Name="StatusBorder" Margin="0,20,0,0" CornerRadius="4" Padding="10" IsVisible="False">
-            <TextBlock Name="StatusTextBlock" TextAlignment="Center" FontSize="12" TextWrapping="Wrap" />
+        <Border Grid.Row="5" Name="BorderStatus" Margin="0,20,0,0" CornerRadius="4" Padding="10" IsVisible="False">
+            <TextBlock Name="TxtStatus" TextAlignment="Center" FontSize="12" TextWrapping="Wrap" />
         </Border>
 
     </Grid>

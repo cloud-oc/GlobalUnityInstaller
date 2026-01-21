@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -10,20 +11,20 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-namespace UnityProxyLauncher
+namespace GlobalUnityInstaller
 {
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-            FindUnityHub();
+            AutoDetectUnityHubPath();
 
-            SelectPathButton.Click += SelectPathButton_Click;
-            LaunchButton.Click += LaunchButton_Click;
+            BtnBrowse.Click += BtnBrowse_Click;
+            BtnLaunch.Click += BtnLaunch_Click;
         }
 
-        private void FindUnityHub()
+        private void AutoDetectUnityHubPath()
         {
             string? foundPath = null;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -47,11 +48,11 @@ namespace UnityProxyLauncher
 
             if (foundPath != null)
             {
-                PathTextBox.Text = foundPath;
+                TxtUnityPath.Text = foundPath;
             }
         }
 
-        private async void SelectPathButton_Click(object? sender, RoutedEventArgs e)
+        private async void BtnBrowse_Click(object? sender, RoutedEventArgs e)
         {
             // Use StorageProvider (modern Avalonia API)
             var folders = await StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
@@ -88,16 +89,16 @@ namespace UnityProxyLauncher
                  }
             }
             
-            PathTextBox.Text = validatedPath ?? folderPath;
+            TxtUnityPath.Text = validatedPath ?? folderPath;
         }
 
-        private async void LaunchButton_Click(object? sender, RoutedEventArgs e)
+        private async void BtnLaunch_Click(object? sender, RoutedEventArgs e)
         {
             SetStatus("", false); // clear
 
-            string hubPath = PathTextBox.Text;
-            string httpPortStr = HttpPortTextBox.Text;
-            string socksPortStr = SocksPortTextBox.Text;
+            string hubPath = TxtUnityPath.Text;
+            string httpPortStr = TxtHttpPort.Text;
+            string socksPortStr = TxtSocksPort.Text;
 
             if (string.IsNullOrWhiteSpace(hubPath) || !File.Exists(hubPath))
             {
@@ -183,26 +184,22 @@ namespace UnityProxyLauncher
         {
             if (string.IsNullOrEmpty(msg))
             {
-                StatusBorder.IsVisible = false;
-                return;
-            }
-
-            StatusBorder.IsVisible = true;
-            StatusTextBlock.Text = msg;
+            BorderStatus.IsVisible = true;
+            TxtStatus.Text = msg;
             
             if (isError)
             {
-                StatusBorder.Background = new SolidColorBrush(Color.Parse("#2e0000"));
-                StatusBorder.BorderBrush = new SolidColorBrush(Color.Parse("#ff5252"));
-                StatusBorder.BorderThickness = new Thickness(1);
-                StatusTextBlock.Foreground = new SolidColorBrush(Color.Parse("#ff5252"));
+                BorderStatus.Background = new SolidColorBrush(Color.Parse("#2e0000"));
+                BorderStatus.BorderBrush = new SolidColorBrush(Color.Parse("#ff5252"));
+                BorderStatus.BorderThickness = new Thickness(1);
+                TxtStatus.Foreground = new SolidColorBrush(Color.Parse("#ff5252"));
             }
             else
             {
-                StatusBorder.Background = new SolidColorBrush(Color.Parse("#002e00"));
-                StatusBorder.BorderBrush = new SolidColorBrush(Color.Parse("#69f0ae"));
-                StatusBorder.BorderThickness = new Thickness(1);
-                StatusTextBlock.Foreground = new SolidColorBrush(Color.Parse("#69f0ae"));
+                BorderStatus.Background = new SolidColorBrush(Color.Parse("#002e00"));
+                BorderStatus.BorderBrush = new SolidColorBrush(Color.Parse("#69f0ae"));
+                BorderStatus.BorderThickness = new Thickness(1);
+                TxtStatus.Foreground = new SolidColorBrush(Color.Parse("#69f0ae"));
             }
         }
     }
