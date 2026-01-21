@@ -158,14 +158,15 @@ namespace GlobalUnityInstaller
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 {
                     // macOS: Use launchctl setenv + open command
+                    // Crucial: Must wait for launchctl to finish setting env before launching app
                     if (int.TryParse(httpPortStr, out int hp))
                     {
-                        Process.Start("launchctl", $"setenv HTTP_PROXY http://127.0.0.1:{hp}");
-                        Process.Start("launchctl", $"setenv HTTPS_PROXY http://127.0.0.1:{hp}");
+                        Process.Start("launchctl", $"setenv HTTP_PROXY http://127.0.0.1:{hp}")?.WaitForExit();
+                        Process.Start("launchctl", $"setenv HTTPS_PROXY http://127.0.0.1:{hp}")?.WaitForExit();
                     }
                     if (int.TryParse(socksPortStr, out int sp))
                     {
-                        Process.Start("launchctl", $"setenv ALL_PROXY socks5://127.0.0.1:{sp}");
+                        Process.Start("launchctl", $"setenv ALL_PROXY socks5://127.0.0.1:{sp}")?.WaitForExit();
                     }
 
                     // Try to resolve the .app path from the executable path
