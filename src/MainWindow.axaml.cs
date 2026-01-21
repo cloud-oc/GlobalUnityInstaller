@@ -155,23 +155,56 @@ namespace GlobalUnityInstaller
 
             try
             {
-                var psi = new ProcessStartInfo
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 {
-                    FileName = hubPath,
-                    UseShellExecute = false // Required to set env vars
-                };
+                    // macOS: Use launchctl setenv + open command
+                    if (int.TryParse(httpPortStr, out int hp))
+                    {
+                        Process.Start("launchctl", $"setenv HTTP_PROXY http://127.0.0.1:{hp}");
+                        Process.Start("launchctl", $"setenv HTTPS_PROXY http://127.0.0.1:{hp}");
+                    }
+                    if (int.TryParse(socksPortStr, out int sp))
+                    {
+                        Process.Start("launchctl", $"setenv ALL_PROXY socks5://127.0.0.1:{sp}");
+                    }
 
-                if (int.TryParse(httpPortStr, out int hp))
-                {
-                    psi.EnvironmentVariables["HTTP_PROXY"] = $"http://127.0.0.1:{hp}";
-                    psi.EnvironmentVariables["HTTPS_PROXY"] = $"http://127.0.0.1:{hp}";
+                    // Try to resolve the .app path from the executable path
+                    // e.g. /Applications/Unity Hub.app/Contents/MacOS/Unity Hub -> /Applications/Unity Hub.app
+                    string appPath = hubPath;
+                    if (hubPath.Contains(".app/Contents/MacOS"))
+                    {
+                        var index = hubPath.IndexOf(".app");
+                        if (index != -1)
+                        {
+                            appPath = hubPath.Substring(0, index + 4);
+                        }
+                    }
+                    
+                    // Launch using 'open'
+                    Process.Start("open", $"\"{appPath}\"");
                 }
-                if (int.TryParse(socksPortStr, out int sp))
+                else
                 {
-                    psi.EnvironmentVariables["ALL_PROXY"] = $"socks5://127.0.0.1:{sp}";
+                    // Windows / Linux: Direct launch with environment variables
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = hubPath,
+                        UseShellExecute = false
+                    };
+
+                    if (int.TryParse(httpPortStr, out int hp))
+                    {
+                        psi.EnvironmentVariables["HTTP_PROXY"] = $"http://127.0.0.1:{hp}";
+                        psi.EnvironmentVariables["HTTPS_PROXY"] = $"http://127.0.0.1:{hp}";
+                    }
+                    if (int.TryParse(socksPortStr, out int sp))
+                    {
+                        psi.EnvironmentVariables["ALL_PROXY"] = $"socks5://127.0.0.1:{sp}";
+                    }
+
+                    Process.Start(psi);
                 }
 
-                Process.Start(psi);
                 SetStatus(Localization.Get("StatusLaunchSuccess"), 0);
             }
             catch (Exception ex)
