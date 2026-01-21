@@ -184,22 +184,26 @@ namespace GlobalUnityInstaller
         {
             if (string.IsNullOrEmpty(msg))
             {
+                BorderStatus.IsVisible = false;
+                return;
+            }
+
             BorderStatus.IsVisible = true;
             TxtStatus.Text = msg;
             
             if (isError)
             {
-                BorderStatus.Background = new SolidColorBrush(Color.Parse("#2e0000"));
-                BorderStatus.BorderBrush = new SolidColorBrush(Color.Parse("#ff5252"));
+                BorderStatus.Background = new SolidColorBrush(Color.Parse("#450a0a")); // Dark Red
+                BorderStatus.BorderBrush = new SolidColorBrush(Color.Parse("#ef4444")); // Red-500
                 BorderStatus.BorderThickness = new Thickness(1);
-                TxtStatus.Foreground = new SolidColorBrush(Color.Parse("#ff5252"));
+                TxtStatus.Foreground = new SolidColorBrush(Color.Parse("#fca5a5")); // Red-300
             }
             else
             {
-                BorderStatus.Background = new SolidColorBrush(Color.Parse("#002e00"));
-                BorderStatus.BorderBrush = new SolidColorBrush(Color.Parse("#69f0ae"));
+                BorderStatus.Background = new SolidColorBrush(Color.Parse("#052e16")); // Dark Green
+                BorderStatus.BorderBrush = new SolidColorBrush(Color.Parse("#22c55e")); // Green-500
                 BorderStatus.BorderThickness = new Thickness(1);
-                TxtStatus.Foreground = new SolidColorBrush(Color.Parse("#69f0ae"));
+                TxtStatus.Foreground = new SolidColorBrush(Color.Parse("#86efac")); // Green-300
             }
         }
     }
