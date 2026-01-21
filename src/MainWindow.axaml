@@ -8,41 +8,37 @@
         WindowStartupLocation="CenterScreen"
         x:Class="GlobalUnityInstaller.MainWindow"
         Title="GlobalUnityInstaller">
-    <Grid RowDefinitions="Auto, Auto, Auto, Auto, *" Margin="25">
+    <Grid RowDefinitions="Auto, Auto, Auto, Auto" Margin="30,30,30,20">
         
-        <TextBlock Grid.Row="0" Text="GlobalUnityInstaller" FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="0,0,0,15" />
-
         <!-- Path Selection -->
-        <StackPanel Grid.Row="1" Spacing="5" Margin="0,0,0,15">
-            <Label Content="Unity Hub Location" FontSize="11" Opacity="0.8"/>
-            <Grid ColumnDefinitions="*, 8, Auto">
-                <TextBox Grid.Column="0" Name="TxtUnityPath" Watermark="自动检测..." IsReadOnly="True" Height="28" MinHeight="0" />
-                <Button Grid.Column="2" Name="BtnBrowse" Content="..." Padding="10,0" Height="28" MinHeight="0" />
+        <StackPanel Grid.Row="0" Spacing="8" Margin="0,0,0,20">
+            <Label Name="LblUnityPath" Content="Unity Hub Location" FontSize="14" Opacity="0.8"/>
+            <Grid ColumnDefinitions="*, 10, Auto">
+                <TextBox Grid.Column="0" Name="TxtUnityPath" Watermark="自动检测..." IsReadOnly="True" Height="32" MinHeight="0" FontSize="14" />
+                <Button Grid.Column="2" Name="BtnBrowse" Content="..." Padding="12,0" Height="32" MinHeight="0" FontSize="14" />
             </Grid> 
-            <TextBlock Text="若未检测到，请手动选择安装路径" Opacity="0.5" FontSize="10" Margin="0,3,0,0" />
+            <TextBlock Name="TxtManualHint" Text="若未检测到，请手动选择安装路径" Opacity="0.5" FontSize="12" Margin="0,4,0,0" />
         </StackPanel>
 
         <!-- Proxy Config (Merged) -->
-        <Grid Grid.Row="2" ColumnDefinitions="*, 15, *" Margin="0,0,0,20">
-            <StackPanel Grid.Column="0" Spacing="5">
-                <Label Content="HTTP Proxy Port" FontSize="11" Opacity="0.8"/>
-                <TextBox Name="TxtHttpPort" Watermark="Ex: 7890" Height="28" MinHeight="0" />
+        <Grid Grid.Row="1" ColumnDefinitions="*, 20, *" Margin="0,0,0,25">
+            <StackPanel Grid.Column="0" Spacing="8">
+                <Label Name="LblHttpPort" Content="HTTP Proxy Port" FontSize="14" Opacity="0.8"/>
+                <TextBox Name="TxtHttpPort" Watermark="Ex: 7890" Height="32" MinHeight="0" FontSize="14" />
             </StackPanel>
-            <StackPanel Grid.Column="2" Spacing="5">
-                <Label Content="SOCKS5 Proxy Port" FontSize="11" Opacity="0.8"/>
-                <TextBox Name="TxtSocksPort" Watermark="Ex: 1080" Height="28" MinHeight="0" />
+            <StackPanel Grid.Column="2" Spacing="8">
+                <Label Name="LblSocksPort" Content="SOCKS5 Proxy Port" FontSize="14" Opacity="0.8"/>
+                <TextBox Name="TxtSocksPort" Watermark="Ex: 1080" Height="32" MinHeight="0" FontSize="14" />
             </StackPanel>
         </Grid>
 
         <!-- Actions -->
-        <Button Grid.Row="3" Name="BtnLaunch" Content="启动 Unity Hub" 
+        <Button Grid.Row="2" Name="BtnLaunch" Content="启动 Unity Hub" 
                 HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
-                Background="#007ACC" Foreground="White" FontWeight="SemiBold" FontSize="14" Padding="10" />
+                Background="#007ACC" Foreground="White" FontWeight="SemiBold" FontSize="16" Padding="10,6" />
 
-        <!-- Status Bar -->
-        <Border Grid.Row="4" Name="BorderStatus" Margin="0,15,0,0" CornerRadius="3" Padding="8" IsVisible="False">
-            <TextBlock Name="TxtStatus" TextAlignment="Center" FontSize="11" TextWrapping="Wrap" />
-        </Border>
+        <!-- Status Bar: Reserve 40px height to prevent layout jump and ensure visibility -->
+        <TextBlock Grid.Row="3" Name="TxtStatus" Margin="0,15,0,0" TextAlignment="Center" FontSize="14" TextWrapping="Wrap" MinHeight="40" />
 
     </Grid>
 </Window>

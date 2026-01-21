@@ -18,10 +18,26 @@ namespace GlobalUnityInstaller
         public MainWindow()
         {
             InitializeComponent();
+            Localization.Init();
+            ApplyLocalization();
             AutoDetectUnityHubPath();
 
             BtnBrowse.Click += BtnBrowse_Click;
             BtnLaunch.Click += BtnLaunch_Click;
+        }
+
+        private void ApplyLocalization()
+        {
+            Title = Localization.Get("WindowTitle");
+            LblUnityPath.Content = Localization.Get("LabelUnityPath");
+            TxtUnityPath.Watermark = Localization.Get("WatermarkUnityPath");
+            BtnBrowse.Content = Localization.Get("BtnBrowse");
+            TxtManualHint.Text = Localization.Get("HintManualSelect");
+            LblHttpPort.Content = Localization.Get("LabelHttpPort");
+            TxtHttpPort.Watermark = Localization.Get("WatermarkHttpPort");
+            LblSocksPort.Content = Localization.Get("LabelSocksPort");
+            TxtSocksPort.Watermark = Localization.Get("WatermarkSocksPort");
+            BtnLaunch.Content = Localization.Get("BtnLaunch");
         }
 
         private void AutoDetectUnityHubPath()
@@ -57,7 +73,7 @@ namespace GlobalUnityInstaller
             // Use StorageProvider (modern Avalonia API)
             var folders = await StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
             {
-                Title = "选择 Unity Hub 文件夹",
+                Title = Localization.Get("DialogTitleSelectFolder"),
                 AllowMultiple = false
             });
 
@@ -94,24 +110,27 @@ namespace GlobalUnityInstaller
 
         private async void BtnLaunch_Click(object? sender, RoutedEventArgs e)
         {
-            SetStatus("", false); // clear
+            SetStatus("", 0); // clear
 
-            string hubPath = TxtUnityPath.Text;
-            string httpPortStr = TxtHttpPort.Text;
-            string socksPortStr = TxtSocksPort.Text;
+            string hubPath = TxtUnityPath.Text ?? "";
+            string httpPortStr = TxtHttpPort.Text ?? "";
+            string socksPortStr = TxtSocksPort.Text ?? "";
 
-            if (string.IsNullOrWhiteSpace(hubPath) || !File.Exists(hubPath))
+            if (string.IsNullOrWhiteSpace(hubPath))
             {
-                 // On mac, 'hubPath' might be the .app bundle path if user selected manually and logic above failed to drill down
-                 // But for simplicity let's assume valid path or fail
-                 // Actually, process start needs executable path
-                 SetStatus("Unity Hub 路径无效或文件不存在", true);
+                 SetStatus(Localization.Get("StatusMissPath"), 1); // Warning
+                 return;
+            }
+
+            if (!File.Exists(hubPath))
+            {
+                 SetStatus(Localization.Get("StatusInvalidPath"), 2); // Error
                  return;
             }
 
             if (string.IsNullOrWhiteSpace(httpPortStr) && string.IsNullOrWhiteSpace(socksPortStr))
             {
-                SetStatus("请至少填写一个代理端口", true);
+                SetStatus(Localization.Get("StatusNoPort"), 2);
                 return;
             }
 
@@ -120,7 +139,7 @@ namespace GlobalUnityInstaller
             {
                 if (!await CheckPortAsync(httpPort))
                 {
-                    SetStatus($"HTTP 端口 {httpPort} 无法连接", true);
+                    SetStatus(string.Format(Localization.Get("StatusHttpFail"), httpPort), 2);
                     return;
                 }
             }
@@ -129,7 +148,7 @@ namespace GlobalUnityInstaller
             {
                 if (!await CheckPortAsync(socksPort))
                 {
-                     SetStatus($"SOCKS5 端口 {socksPort} 无法连接", true);
+                     SetStatus(string.Format(Localization.Get("StatusSocksFail"), socksPort), 2);
                      return;
                 }
             }
@@ -153,11 +172,11 @@ namespace GlobalUnityInstaller
                 }
 
                 Process.Start(psi);
-                SetStatus("Unity Hub 启动成功！", false);
+                SetStatus(Localization.Get("StatusLaunchSuccess"), 0);
             }
             catch (Exception ex)
             {
-                SetStatus($"启动失败: {ex.Message}", true);
+                SetStatus(string.Format(Localization.Get("StatusLaunchFail"), ex.Message), 2);
             }
         }
 
@@ -180,30 +199,27 @@ namespace GlobalUnityInstaller
              });
         }
 
-        private void SetStatus(string msg, bool isError)
+        // statusLevel: 0=Success, 1=Warning, 2=Error
+        private void SetStatus(string msg, int statusLevel)
         {
+            TxtStatus.Text = msg ?? "";
+            
             if (string.IsNullOrEmpty(msg))
             {
-                BorderStatus.IsVisible = false;
                 return;
             }
 
-            BorderStatus.IsVisible = true;
-            TxtStatus.Text = msg;
-            
-            if (isError)
+            if (statusLevel == 2) // Error
             {
-                BorderStatus.Background = new SolidColorBrush(Color.Parse("#450a0a")); // Dark Red
-                BorderStatus.BorderBrush = new SolidColorBrush(Color.Parse("#ef4444")); // Red-500
-                BorderStatus.BorderThickness = new Thickness(1);
-                TxtStatus.Foreground = new SolidColorBrush(Color.Parse("#fca5a5")); // Red-300
+                TxtStatus.Foreground = new SolidColorBrush(Color.Parse("#ef4444")); // Red-500
             }
-            else
+            else if (statusLevel == 1) // Warning
             {
-                BorderStatus.Background = new SolidColorBrush(Color.Parse("#052e16")); // Dark Green
-                BorderStatus.BorderBrush = new SolidColorBrush(Color.Parse("#22c55e")); // Green-500
-                BorderStatus.BorderThickness = new Thickness(1);
-                TxtStatus.Foreground = new SolidColorBrush(Color.Parse("#86efac")); // Green-300
+                TxtStatus.Foreground = new SolidColorBrush(Color.Parse("#eab308")); // Yellow-500
+            }
+            else // Success
+            {
+                TxtStatus.Foreground = new SolidColorBrush(Color.Parse("#22c55e")); // Green-500
             }
         }
     }
