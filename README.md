@@ -13,13 +13,13 @@
 
 - **Windows**: Windows 10 或更高版本
 - **macOS**: macOS 10.15 或更高版本
-- 运行环境: [**.NET Desktop Runtime 8.0**](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+- 运行环境: [**.NET Desktop Runtime 8.0 或更高版本**](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
 ## 开发者指南
 
 如果您想自己编译修改代码：
 
-1.  安装 [**.NET SDK 8.0**](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)。
+1.  安装 [**.NET SDK 8.0 或更高版本**](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)。
 2.  进入项目根目录。
 3.  运行项目：
     ```bash

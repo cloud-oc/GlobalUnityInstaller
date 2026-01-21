@@ -3,18 +3,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="550"
-        Width="380" Height="480"
+        Width="380" Height="320"
         CanResize="False"
         WindowStartupLocation="CenterScreen"
         x:Class="GlobalUnityInstaller.MainWindow"
         Title="GlobalUnityInstaller">
-    <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, *" Margin="25">
+    <Grid RowDefinitions="Auto, Auto, Auto, Auto, *" Margin="25">
         
-        <TextBlock Grid.Row="0" Text="GlobalUnityInstaller" FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="0,0,0,20" />
+        <TextBlock Grid.Row="0" Text="GlobalUnityInstaller" FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="0,0,0,15" />
 
         <!-- Path Selection -->
         <StackPanel Grid.Row="1" Spacing="5" Margin="0,0,0,15">
-            <Label Content="Units Hub Location" FontSize="11" Opacity="0.8"/>
+            <Label Content="Unity Hub Location" FontSize="11" Opacity="0.8"/>
             <Grid ColumnDefinitions="*, 8, Auto">
                 <TextBox Grid.Column="0" Name="TxtUnityPath" Watermark="自动检测..." IsReadOnly="True" Height="28" MinHeight="0" />
                 <Button Grid.Column="2" Name="BtnBrowse" Content="..." Padding="10,0" Height="28" MinHeight="0" />
@@ -22,24 +22,25 @@
             <TextBlock Text="若未检测到，请手动选择安装路径" Opacity="0.5" FontSize="10" Margin="0,3,0,0" />
         </StackPanel>
 
-        <!-- Proxy Config -->
-        <StackPanel Grid.Row="2" Spacing="5" Margin="0,0,0,10">
-            <Label Content="HTTP Proxy Port" FontSize="11" Opacity="0.8"/>
-            <TextBox Name="TxtHttpPort" Watermark="Ex: 7890" Height="28" MinHeight="0" />
-        </StackPanel>
-
-        <StackPanel Grid.Row="3" Spacing="5" Margin="0,0,0,25">
-            <Label Content="SOCKS5 Proxy Port" FontSize="11" Opacity="0.8"/>
-            <TextBox Name="TxtSocksPort" Watermark="Ex: 1080" Height="28" MinHeight="0" />
-        </StackPanel>
+        <!-- Proxy Config (Merged) -->
+        <Grid Grid.Row="2" ColumnDefinitions="*, 15, *" Margin="0,0,0,20">
+            <StackPanel Grid.Column="0" Spacing="5">
+                <Label Content="HTTP Proxy Port" FontSize="11" Opacity="0.8"/>
+                <TextBox Name="TxtHttpPort" Watermark="Ex: 7890" Height="28" MinHeight="0" />
+            </StackPanel>
+            <StackPanel Grid.Column="2" Spacing="5">
+                <Label Content="SOCKS5 Proxy Port" FontSize="11" Opacity="0.8"/>
+                <TextBox Name="TxtSocksPort" Watermark="Ex: 1080" Height="28" MinHeight="0" />
+            </StackPanel>
+        </Grid>
 
         <!-- Actions -->
-        <Button Grid.Row="4" Name="BtnLaunch" Content="启动 Unity Hub" 
+        <Button Grid.Row="3" Name="BtnLaunch" Content="启动 Unity Hub" 
                 HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
                 Background="#007ACC" Foreground="White" FontWeight="SemiBold" FontSize="14" Padding="10" />
 
         <!-- Status Bar -->
-        <Border Grid.Row="5" Name="BorderStatus" Margin="0,15,0,0" CornerRadius="3" Padding="8" IsVisible="False">
+        <Border Grid.Row="4" Name="BorderStatus" Margin="0,15,0,0" CornerRadius="3" Padding="8" IsVisible="False">
             <TextBlock Name="TxtStatus" TextAlignment="Center" FontSize="11" TextWrapping="Wrap" />
         </Border>
 
