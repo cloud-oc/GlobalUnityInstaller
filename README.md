@@ -1,4 +1,4 @@
-# Unity Hub 代理启动器 (.NET Avalonia Edition)
+# GlobalUnityInstaller (.NET Avalonia Edition)
 
 一个基于 **.NET 8.0 + Avalonia UI** 开发的跨平台工具，用于通过代理服务器启动 Unity Hub，解决在中国大陆地区访问 Unity 服务器慢或无法连接的问题。
 
@@ -38,5 +38,5 @@
 
 1.  启动程序。
 2.  程序会自动查找 Unity Hub 路径，如果未找到，请点击 **"选择文件夹"** 手动指定。
-3.  输入您的代理端口 (例如: `7890`)。
+3.  输入您的代理端口 (例如: `7897`)。
 4.  点击 **"启动 Unity Hub"**。
