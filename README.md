@@ -10,6 +10,13 @@ Global Unity Installer（简称GUI）是一个简洁的跨平台工具，通过�
 - **多语言支持**：界面根据系统语言自动切换。
 > 本工具仅提供 64 位版本，**不支持 32 位系统**。
 
+## 🔗 Unity Hub 国际版下载
+
+Unity Hub 国际版下载：[https://www.nounitycn.top/unityhub](https://www.nounitycn.top/unityhub)
+
+> 特别感谢 **nounitycn** 项目提供此服务。
+> ⚠️ **注意**：nounitycn 无法再在中国大陆 IP 环境下下载编辑器。
+
 ## 📦 如何使用
 
 ### 方式一：下载可执行文件（推荐）
