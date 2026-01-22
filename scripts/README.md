@@ -6,6 +6,8 @@
 
 Windows 已配置单文件发布，自动使用 `assets/icon.ico` 作为应用图标。
 
+### Windows x64
+
 **发布命令：**
 ```powershell
 dotnet publish src/GlobalUnityInstaller.csproj -c Release -r win-x64 --self-contained
@@ -13,12 +15,24 @@ dotnet publish src/GlobalUnityInstaller.csproj -c Release -r win-x64 --self-cont
 
 **产物位置：** `src/bin/Release/net8.0/win-x64/publish/GlobalUnityInstaller.exe`
 
-**分发方式：**
-- 直接分发 `.exe` 文件（推荐）
-- 或打包为 `.zip`：
-  ```powershell
-  Compress-Archive -Path "src/bin/Release/net8.0/win-x64/publish/GlobalUnityInstaller.exe" -DestinationPath "GlobalUnityInstaller-win-x64.zip"
-  ```
+**打包为 ZIP：**
+```powershell
+Compress-Archive -Path "src/bin/Release/net8.0/win-x64/publish/GlobalUnityInstaller.exe" -DestinationPath "GlobalUnityInstaller-win-x64.zip" -Force
+```
+
+### Windows ARM64
+
+**发布命令：**
+```powershell
+dotnet publish src/GlobalUnityInstaller.csproj -c Release -r win-arm64 --self-contained
+```
+
+**产物位置：** `src/bin/Release/net8.0/win-arm64/publish/GlobalUnityInstaller.exe`
+
+**打包为 ZIP：**
+```powershell
+Compress-Archive -Path "src/bin/Release/net8.0/win-arm64/publish/GlobalUnityInstaller.exe" -DestinationPath "GlobalUnityInstaller-win-arm64.zip" -Force
+```
 
 **Icon：** 已自动嵌入 exe 文件，用户可在文件管理器中看到应用图标
 
@@ -26,39 +40,7 @@ dotnet publish src/GlobalUnityInstaller.csproj -c Release -r win-x64 --self-cont
 
 ## 🍎 macOS
 
-### 方式一：在 macOS 上打包（推荐）
-
-```bash
-chmod +x scripts/create-macos-app.sh
-./scripts/create-macos-app.sh arm64  # Apple Silicon
-./scripts/create-macos-app.sh x64    # Intel Mac
-```
-
-**功能：** 自动完成发布 + 创建 `.app` 包 + 设置权限
-
-**打包为 DMG：**
-```bash
-hdiutil create -volname 'GlobalUnityInstaller' -srcfolder GlobalUnityInstaller.app -ov -format UDZO GlobalUnityInstaller-arm64.dmg
-```
-
-### 方式二：在 Windows 上创建 .app 结构
-
-1. 先发布：
-   ```powershell
-   dotnet publish src/GlobalUnityInstaller.csproj -c Release -r osx-arm64 --self-contained
-   ```
-
-2. 创建 .app：
-   ```powershell
-   .\scripts\create-macos-app.ps1 -Arch arm64  # 或 x64
-   ```
-
-3. 将生成的 `GlobalUnityInstaller.app` 文件夹传输到 macOS
-
-4. 在 macOS 上设置权限：
-   ```bash
-   chmod +x GlobalUnityInstaller.app/Contents/MacOS/GlobalUnityInstaller
-   ```
+### Apple Silicon (ARM64)
 
 ---
 
@@ -104,8 +86,22 @@ tar czf GlobalUnityInstaller-linux-x64.tar.gz -C src/bin/Release/net8.0/linux-x6
 ## 🎯 快速发布所有平台
 
 ```powershell
-# Windows
+# 一键发布所有平台（自动打包为标准格式）
+.\publish-all.ps1 -CreatePackages
+```
+
+此命令会生成以下文件：
+- `releases/GlobalUnityInstaller-win-x64.zip`
+- `releases/GlobalUnityInstaller-win-arm64.zip`
+- `releases/GlobalUnityInstaller-linux-x64.tar.gz`
+
+**手动逐个发布：**
+```powershell
+# Windows x64
 dotnet publish src/GlobalUnityInstaller.csproj -c Release -r win-x64 --self-contained
+
+# Windows ARM64
+dotnet publish src/GlobalUnityInstaller.csproj -c Release -r win-arm64 --self-contained
 
 # macOS (需要在各自平台上完成 .app 打包)
 dotnet publish src/GlobalUnityInstaller.csproj -c Release -r osx-arm64 --self-contained
@@ -114,6 +110,18 @@ dotnet publish src/GlobalUnityInstaller.csproj -c Release -r osx-x64 --self-cont
 # Linux
 dotnet publish src/GlobalUnityInstaller.csproj -c Release -r linux-x64 --self-contained
 ```
+
+---
+
+## 📋 标准发布包命名规范
+
+| 平台          | 文件名                                  | 格式   |
+| ------------- | --------------------------------------- | ------ |
+| Windows x64   | `GlobalUnityInstaller-win-x64.zip`      | ZIP    |
+| Windows ARM64 | `GlobalUnityInstaller-win-arm64.zip`    | ZIP    |
+| macOS ARM64   | `GlobalUnityInstaller-mac-arm64.dmg`    | DMG    |
+| macOS x64     | `GlobalUnityInstaller-mac-x64.dmg`      | DMG    |
+| Linux x64     | `GlobalUnityInstaller-linux-x64.tar.gz` | TAR.GZ |
 
 ---
 

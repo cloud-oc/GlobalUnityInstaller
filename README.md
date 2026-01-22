@@ -56,42 +56,54 @@
 <details>
 <summary>Windows</summary>
 
+**Windows x64：**
 ```bash
 dotnet publish src/GlobalUnityInstaller.csproj -c Release -r win-x64 --self-contained
 ```
-产物：`src/bin/Release/net8.0/win-x64/publish/GlobalUnityInstaller.exe`（单文件可执行）
+产物：`src/bin/Release/net8.0/win-x64/publish/GlobalUnityInstaller.exe`
+
+**Windows ARM64：**
+```bash
+dotnet publish src/GlobalUnityInstaller.csproj -c Release -r win-arm64 --self-contained
+```
+产物：`src/bin/Release/net8.0/win-arm64/publish/GlobalUnityInstaller.exe`
+
+打包为 ZIP：
+```powershell
+# x64
+Compress-Archive -Path "src/bin/Release/net8.0/win-x64/publish/GlobalUnityInstaller.exe" -DestinationPath "GlobalUnityInstaller-win-x64.zip" -Force
+
+# ARM64
+Compress-Archive -Path "src/bin/Release/net8.0/win-arm64/publish/GlobalUnityInstaller.exe" -DestinationPath "GlobalUnityInstaller-win-arm64.zip" -Force
+```
 
 </details>
 
 <details>
 <summary>macOS</summary>
 
-**在 macOS 上（推荐）：**
+**Apple Silicon (ARM64)：**
 ```bash
-# Apple Silicon
 chmod +x scripts/create-macos-app.sh
 ./scripts/create-macos-app.sh arm64
+```
 
-# Intel Mac
+**Intel (x64)：**
+```bash
+chmod +x scripts/create-macos-app.sh
 ./scripts/create-macos-app.sh x64
 ```
 
-**在 Windows/Linux 上：**
+打包为 DMG：
 ```bash
-# 1. 发布
-dotnet publish src/GlobalUnityInstaller.csproj -c Release -r osx-arm64 --self-contained
+# ARM64
+hdiutil create -volname 'GlobalUnityInstaller' -srcfolder GlobalUnityInstaller.app -ov -format UDZO GlobalUnityInstaller-mac-arm64.dmg
 
-# 2. 创建 .app（Windows）
-.\scripts\create-macos-app.ps1 -Arch arm64
-
-# 3. 传输到 macOS 并设置权限
-chmod +x GlobalUnityInstaller.app/Contents/MacOS/GlobalUnityInstaller
+# x64
+hdiutil create -volname 'GlobalUnityInstaller' -srcfolder GlobalUnityInstaller.app -ov -format UDZO GlobalUnityInstaller-mac-x64.dmg
 ```
 
-产物：`GlobalUnityInstaller.app` 应用包，可进一步打包为 DMG：
-```bash
-hdiutil create -volname 'GlobalUnityInstaller' -srcfolder GlobalUnityInstaller.app -ov -format UDZO GlobalUnityInstaller.dmg
-```
+> **在 Windows 上交叉编译 macOS 应用：** 见 [scripts/README.md](scripts/README.md)
 
 </details>
 
@@ -111,6 +123,10 @@ chmod +x appimagetool-x86_64.AppImage
 ```
 
 **方式二：简易打包**
+```bashlinux-x64.AppImage
+```
+
+**方式二：简易打包（TAR.GZ）**
 ```bash
 # 发布
 dotnet publish src/GlobalUnityInstaller.csproj -c Release -r linux-x64 --self-contained
@@ -122,11 +138,7 @@ dotnet publish src/GlobalUnityInstaller.csproj -c Release -r linux-x64 --self-co
 tar czf GlobalUnityInstaller-linux-x64.tar.gz -C src/bin/Release/net8.0/linux-x64/publish .
 ```
 
-产物：`.AppImage` 单文件或 `.tar.gz` 压缩包
-
-</details>
-
-> 📖 **详细打包说明**：请参阅 [scripts/README.md](scripts/README.md) 获取完整的打包指南
+产物：`.AppImage` 单文件或 `GlobalUnityInstaller-linux-x64scripts/README.md](scripts/README.md) 获取完整的打包指南
 
 ---
 

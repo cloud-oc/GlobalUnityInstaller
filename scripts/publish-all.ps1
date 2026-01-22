@@ -26,6 +26,7 @@ New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
 # 定义平台
 $Platforms = @(
     @{Name="Windows x64"; Runtime="win-x64"; Extension=".exe"}
+    @{Name="Windows ARM64"; Runtime="win-arm64"; Extension=".exe"}
     @{Name="macOS Apple Silicon"; Runtime="osx-arm64"; Extension=""}
     @{Name="macOS Intel"; Runtime="osx-x64"; Extension=""}
     @{Name="Linux x64"; Runtime="linux-x64"; Extension=""}
@@ -62,12 +63,20 @@ if ($CreatePackages) {
     Write-Host "📦 创建发布包..." -ForegroundColor Cyan
     Write-Host ""
     
-    # Windows
-    Write-Host "打包 Windows..." -ForegroundColor Yellow
+    # Windows x64
+    Write-Host "打包 Windows x64..." -ForegroundColor Yellow
     $WinPublish = "src/bin/Release/net8.0/win-x64/publish"
     if (Test-Path "$WinPublish/$AppName.exe") {
-        Compress-Archive -Path "$WinPublish/$AppName.exe" -DestinationPath "$OutputDir/$AppName-$Version-win-x64.zip" -Force
-        Write-Host "✅ Windows 包创建成功" -ForegroundColor Green
+        Compress-Archive -Path "$WinPublish/$AppName.exe" -DestinationPath "$OutputDir/$AppName-win-x64.zip" -Force
+        Write-Host "✅ Windows x64 包创建成功: $OutputDir/$AppName-win-x64.zip" -ForegroundColor Green
+    }
+    
+    # Windows ARM64
+    Write-Host "打包 Windows ARM64..." -ForegroundColor Yellow
+    $WinARM64Publish = "src/bin/Release/net8.0/win-arm64/publish"
+    if (Test-Path "$WinARM64Publish/$AppName.exe") {
+        Compress-Archive -Path "$WinARM64Publish/$AppName.exe" -DestinationPath "$OutputDir/$AppName-win-arm64.zip" -Force
+        Write-Host "✅ Windows ARM64 包创建成功: $OutputDir/$AppName-win-arm64.zip" -ForegroundColor Green
     }
     
     # macOS - 只复制文件，需要在 macOS 上完成 .app 打包
@@ -101,9 +110,9 @@ exec "./GlobalUnityInstaller" "`$@"
         
         # 使用 tar 打包（如果有 tar 命令）
         if (Get-Command tar -ErrorAction SilentlyContinue) {
-            tar -czf "$OutputDir/$AppName-$Version-linux-x64.tar.gz" -C $LinuxDir .
+            tar -czf "$OutputDir/$AppName-linux-x64.tar.gz" -C $LinuxDir .
             Remove-Item -Path $LinuxDir -Recurse -Force
-            Write-Host "✅ Linux 包创建成功" -ForegroundColor Green
+            Write-Host "✅ Linux 包创建成功: $OutputDir/$AppName-linux-x64.tar.gz" -ForegroundColor Green
         } else {
             Write-Host "⚠️  未找到 tar 命令，Linux 文件保存在 $LinuxDir" -ForegroundColor Yellow
         }
@@ -115,15 +124,21 @@ exec "./GlobalUnityInstaller" "`$@"
 Write-Host "🎉 所有平台发布完成！" -ForegroundColor Green
 Write-Host ""
 Write-Host "📁 发布文件位置:" -ForegroundColor Cyan
-Write-Host "   Windows: src/bin/Release/net8.0/win-x64/publish/" -ForegroundColor White
-Write-Host "   macOS:   src/bin/Release/net8.0/osx-*/publish/" -ForegroundColor White
-Write-Host "   Linux:   src/bin/Release/net8.0/linux-x64/publish/" -ForegroundColor White
+Write-Host "   Windows x64:   src/bin/Release/net8.0/win-x64/publish/" -ForegroundColor White
+Write-Host "   Windows ARM64: src/bin/Release/net8.0/win-arm64/publish/" -ForegroundColor White
+Write-Host "   macOS:         src/bin/Release/net8.0/osx-*/publish/" -ForegroundColor White
+Write-Host "   Linux:         src/bin/Release/net8.0/linux-x64/publish/" -ForegroundColor White
 
 if ($CreatePackages) {
     Write-Host ""
     Write-Host "📦 发布包位置: $OutputDir/" -ForegroundColor Cyan
+    Write-Host "   📦 GlobalUnityInstaller-win-x64.zip" -ForegroundColor White
+    Write-Host "   📦 GlobalUnityInstaller-win-arm64.zip" -ForegroundColor White
+    Write-Host "   📦 GlobalUnityInstaller-linux-x64.tar.gz" -ForegroundColor White
     Write-Host ""
     Write-Host "⚠️  macOS 后续步骤:" -ForegroundColor Yellow
     Write-Host "   1. 将 $OutputDir/macos-* 目录传输到 macOS" -ForegroundColor White
-    Write-Host "   2. 运行 scripts/create-macos-app.sh 创建 .app 包" -ForegroundColor White
+    Write-Host "   2. 在 macOS 上运行命令打包为 DMG:" -ForegroundColor White
+    Write-Host "      hdiutil create -volname 'GlobalUnityInstaller' -srcfolder GlobalUnityInstaller.app -ov -format UDZO GlobalUnityInstaller-mac-arm64.dmg" -ForegroundColor White
+    Write-Host "      hdiutil create -volname 'GlobalUnityInstaller' -srcfolder GlobalUnityInstaller.app -ov -format UDZO GlobalUnityInstaller-mac-x64.dmg" -ForegroundColor White
 }
