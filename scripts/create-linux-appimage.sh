@@ -26,6 +26,12 @@ echo "📋 复制文件..."
 cp -R "$PUBLISH_PATH/"* "$APP_DIR/usr/bin/"
 chmod +x "$APP_DIR/usr/bin/$APP_NAME"
 
+# 3.5 复制 icon
+if [ -f "assets/icon.png" ]; then
+    cp "assets/icon.png" "$APP_DIR/usr/share/icons/hicolor/256x256/apps/globalunityinstaller.png"
+    echo "📌 Icon 已复制"
+fi
+
 # 4. 创建桌面文件
 echo "📝 创建桌面快捷方式..."
 cat > "$APP_DIR/usr/share/applications/$APP_NAME.desktop" << EOF
@@ -47,9 +53,10 @@ HERE=${SELF%/*}
 export PATH="${HERE}/usr/bin/:${PATH}"
 export LD_LIBRARY_PATH="${HERE}/usr/lib/:${LD_LIBRARY_PATH}"
 cd "${HERE}/usr/bin"
-exec "${HERE}/usr/bin/GlobalUnityInstaller" "$@"
-EOF
-chmod +x "$APP_DIR/AppRun"
+if [ -f "$APP_DIR/usr/share/icons/hicolor/256x256/apps/globalunityinstaller.png" ]; then
+    ln -sf usr/share/icons/hicolor/256x256/apps/globalunityinstaller.png "$APP_DIR/globalunityinstaller.png"
+    ln -sf usr/share/icons/hicolor/256x256/apps/globalunityinstaller.png "$APP_DIR/.DirIcon"
+fi
 
 # 6. 创建根目录的快捷方式和图标链接
 ln -sf usr/share/applications/$APP_NAME.desktop "$APP_DIR/$APP_NAME.desktop"
