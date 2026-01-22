@@ -1,115 +1,126 @@
 # 发布脚本说明
 
-本目录包含了为不同平台创建发布包的脚本。
+本项目支持跨平台发布。不同平台需要在相应的系统上编译。
 
-## 📦 Windows
+---
 
-Windows 已配置单文件发布，自动使用 `assets/icon.ico` 作为应用图标。
+## 🚀 推荐：一键发布所有平台
 
-### Windows x64
+### 在 Windows 上运行（推荐方式）
 
-**发布命令：**
 ```powershell
+# 一键发布所有平台并自动打包
+.\publish-all.ps1 -CreatePackages
+```
+
+此命令会为以下平台生成发布包：
+- ✅ `releases/GlobalUnityInstaller-win-x64.zip` (Windows x64)
+- ✅ `releases/GlobalUnityInstaller-win-arm64.zip` (Windows ARM64)
+- ✅ `releases/GlobalUnityInstaller-linux-x64.tar.gz` (Linux x64)
+- ✅ macOS 版本需要在 Mac 上单独编译
+
+---
+
+### 🪟 Windows 系统上运行
+
+在 **Windows 计算机** 上执行以下命令。Windows 已配置单文件发布，自动使用 `assets/icon.ico` 作为应用图标。
+
+#### Windows x64（64位）
+
+```powershell
+# 发布
 dotnet publish src/GlobalUnityInstaller.csproj -c Release -r win-x64 --self-contained
+
+# 打包为 ZIP（可选）
+Compress-Archive -Path "src/bin/Release/net8.0/win-x64/publish/GlobalUnityInstaller.exe" `
+  -DestinationPath "GlobalUnityInstaller-win-x64.zip" -Force
 ```
 
 **产物位置：** `src/bin/Release/net8.0/win-x64/publish/GlobalUnityInstaller.exe`
 
-**打包为 ZIP：**
-```powershell
-Compress-Archive -Path "src/bin/Release/net8.0/win-x64/publish/GlobalUnityInstaller.exe" -DestinationPath "GlobalUnityInstaller-win-x64.zip" -Force
-```
+#### Windows ARM64（ARM 64位）
 
-### Windows ARM64
-
-**发布命令：**
 ```powershell
+# 发布
 dotnet publish src/GlobalUnityInstaller.csproj -c Release -r win-arm64 --self-contained
+
+# 打包为 ZIP（可选）
+Compress-Archive -Path "src/bin/Release/net8.0/win-arm64/publish/GlobalUnityInstaller.exe" `
+  -DestinationPath "GlobalUnityInstaller-win-arm64.zip" -Force
 ```
 
 **产物位置：** `src/bin/Release/net8.0/win-arm64/publish/GlobalUnityInstaller.exe`
 
-**打包为 ZIP：**
-```powershell
-Compress-Archive -Path "src/bin/Release/net8.0/win-arm64/publish/GlobalUnityInstaller.exe" -DestinationPath "GlobalUnityInstaller-win-arm64.zip" -Force
+---
+
+### 🍎 macOS 系统上运行
+
+在 **Mac 计算机** 上执行以下命令。
+
+#### Apple Silicon (ARM64)
+
+```bash
+# 发布
+dotnet publish src/GlobalUnityInstaller.csproj -c Release -r osx-arm64 --self-contained
+
+# 打包为 ZIP（可选）
+cd src/bin/Release/net8.0/osx-arm64/publish
+zip -r GlobalUnityInstaller-mac-arm64.zip GlobalUnityInstaller
 ```
 
-**Icon：** 已自动嵌入 exe 文件，用户可在文件管理器中看到应用图标
+**产物位置：** `src/bin/Release/net8.0/osx-arm64/publish/GlobalUnityInstaller`
 
----
+#### Intel x64
 
-## 🍎 macOS
-
-### Apple Silicon (ARM64)
-
----
-
-## 🐧 Linux
-
-### 方式一：创建 AppImage（推荐）
-
-**在 Linux 上运行：**
 ```bash
+# 发布
+dotnet publish src/GlobalUnityInstaller.csproj -c Release -r osx-x64 --self-contained
+
+# 打包为 ZIP（可选）
+cd src/bin/Release/net8.0/osx-x64/publish
+zip -r GlobalUnityInstaller-mac-x64.zip GlobalUnityInstaller
+```
+
+**产物位置：** `src/bin/Release/net8.0/osx-x64/publish/GlobalUnityInstaller`
+
+---
+
+### 🐧 Linux 系统上运行
+
+在 **Linux 计算机** 上执行以下命令。
+
+#### Linux x64 - 方式一：创建 AppImage（推荐）
+
+```bash
+# 使脚本可执行
 chmod +x scripts/create-linux-appimage.sh
-./scripts/create-linux-appimage.sh
-```
 
-**然后使用 appimagetool 构建：**
-```bash
+# 运行脚本创建 AppImage
+./scripts/create-linux-appimage.sh
+
+# 使用 appimagetool 打包（需要下载工具）
 wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
 chmod +x appimagetool-x86_64.AppImage
 ./appimagetool-x86_64.AppImage GlobalUnityInstaller.AppDir GlobalUnityInstaller-x86_64.AppImage
 ```
 
-**产物：** 单个 `.AppImage` 文件，用户下载后赋予执行权限即可运行
+**优点：** 单个 `.AppImage` 文件，用户下载后赋予执行权限即可直接运行，无需安装依赖
 
-### 方式二：简易打包（跨平台）
+#### Linux x64 - 方式二：简易打包
 
-**在 Windows 上：**
-```powershell
-.\scripts\create-linux-package.ps1
-```
-
-**在 Linux 上：**
 ```bash
 # 发布
 dotnet publish src/GlobalUnityInstaller.csproj -c Release -r linux-x64 --self-contained
 
-# 打包
+# 打包为 tar.gz
 tar czf GlobalUnityInstaller-linux-x64.tar.gz -C src/bin/Release/net8.0/linux-x64/publish .
+
+# 用户使用时需赋予执行权限
+chmod +x GlobalUnityInstaller
+./GlobalUnityInstaller
 ```
 
-**产物：** `.tar.gz` 压缩包，用户解压后需运行 `chmod +x GlobalUnityInstaller` 赋予执行权限
-
----
-
-## 🎯 快速发布所有平台
-
-```powershell
-# 一键发布所有平台（自动打包为标准格式）
-.\publish-all.ps1 -CreatePackages
-```
-
-此命令会生成以下文件：
-- `releases/GlobalUnityInstaller-win-x64.zip`
-- `releases/GlobalUnityInstaller-win-arm64.zip`
-- `releases/GlobalUnityInstaller-linux-x64.tar.gz`
-
-**手动逐个发布：**
-```powershell
-# Windows x64
-dotnet publish src/GlobalUnityInstaller.csproj -c Release -r win-x64 --self-contained
-
-# Windows ARM64
-dotnet publish src/GlobalUnityInstaller.csproj -c Release -r win-arm64 --self-contained
-
-# macOS (需要在各自平台上完成 .app 打包)
-dotnet publish src/GlobalUnityInstaller.csproj -c Release -r osx-arm64 --self-contained
-dotnet publish src/GlobalUnityInstaller.csproj -c Release -r osx-x64 --self-contained
-
-# Linux
-dotnet publish src/GlobalUnityInstaller.csproj -c Release -r linux-x64 --self-contained
-```
+**产物位置：** `src/bin/Release/net8.0/linux-x64/publish/GlobalUnityInstaller`
 
 ---
 
