@@ -10,7 +10,7 @@
 
 ```powershell
 # 一键发布所有平台并自动打包
-.\publish-all.ps1 -CreatePackages
+.\scripts\publish-all.ps1 -CreatePackages
 ```
 
 此命令会为以下平台生成发布包：
