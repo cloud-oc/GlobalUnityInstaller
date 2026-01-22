@@ -14,10 +14,12 @@ Global Unity Installer（简称GUI）是一个简洁的跨平台工具，通过�
 
 Unity Hub 国际版下载：[https://www.nounitycn.top/unityhub](https://www.nounitycn.top/unityhub)
 
-> 特别感谢 **nounitycn** 项目提供此服务。
-> ⚠️ **注意**：nounitycn 无法再在中国大陆 IP 环境下下载编辑器。
+> 特别感谢 **NoUnityCN** 提供下载服务。  
+> ⚠️ **注意**：NoUnityCN 无法再在中国大陆 IP 环境下下载编辑器。
 
 ## 📦 如何使用
+
+> ⚠️ **重要提示**：在使用本工具启动 Unity Hub 之前，请确保**彻底关闭**现有的 Unity Hub 进程（包括系统托盘图标），否则代理注入可能不会生效。
 
 ### 方式一：下载可执行文件（推荐）
 
@@ -35,22 +37,84 @@ Unity Hub 国际版下载：[https://www.nounitycn.top/unityhub](https://www.nou
 
 ### 方式三：自行编译
 
-**Windows:**
-```bash
-dotnet publish src/GlobalUnityInstaller.csproj -c Release -r win-x64 --self-contained -p:PublishSingleFile=true
+**快速发布所有平台：**
+```powershell
+.\scripts\publish-all.ps1 -CreatePackages
 ```
 
-**macOS (Apple Silicon):**
+**各平台单独编译：**
+
+<details>
+<summary>Windows</summary>
+
 ```bash
+dotnet publish src/GlobalUnityInstaller.csproj -c Release -r win-x64 --self-contained
+```
+产物：`src/bin/Release/net8.0/win-x64/publish/GlobalUnityInstaller.exe`（单文件可执行）
+
+</details>
+
+<details>
+<summary>macOS</summary>
+
+**在 macOS 上（推荐）：**
+```bash
+# Apple Silicon
+chmod +x scripts/create-macos-app.sh
+./scripts/create-macos-app.sh arm64
+
+# Intel Mac
+./scripts/create-macos-app.sh x64
+```
+
+**在 Windows/Linux 上：**
+```bash
+# 1. 发布
 dotnet publish src/GlobalUnityInstaller.csproj -c Release -r osx-arm64 --self-contained
+
+# 2. 创建 .app（Windows）
+.\scripts\create-macos-app.ps1 -Arch arm64
+
+# 3. 传输到 macOS 并设置权限
+chmod +x GlobalUnityInstaller.app/Contents/MacOS/GlobalUnityInstaller
 ```
 
-**macOS (Intel):**
+产物：`GlobalUnityInstaller.app` 应用包，可进一步打包为 DMG：
 ```bash
-dotnet publish src/GlobalUnityInstaller.csproj -c Release -r osx-x64 --self-contained
+hdiutil create -volname 'GlobalUnityInstaller' -srcfolder GlobalUnityInstaller.app -ov -format UDZO GlobalUnityInstaller.dmg
 ```
 
-**Linux:**
+</details>
+
+<details>
+<summary>Linux</summary>
+
+**方式一：AppImage（推荐）**
 ```bash
+# 在 Linux 上运行
+chmod +x scripts/create-linux-appimage.sh
+./scripts/create-linux-appimage.sh
+
+# 下载并使用 appimagetool
+wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+chmod +x appimagetool-x86_64.AppImage
+./appimagetool-x86_64.AppImage GlobalUnityInstaller.AppDir GlobalUnityInstaller-x86_64.AppImage
+```
+
+**方式二：简易打包**
+```bash
+# 发布
 dotnet publish src/GlobalUnityInstaller.csproj -c Release -r linux-x64 --self-contained
+
+# 在 Windows 上创建包
+.\scripts\create-linux-package.ps1
+
+# 或在 Linux 上打包
+tar czf GlobalUnityInstaller-linux-x64.tar.gz -C src/bin/Release/net8.0/linux-x64/publish .
 ```
+
+产物：`.AppImage` 单文件或 `.tar.gz` 压缩包
+
+</details>
+
+> 📖 **详细打包说明**：请参阅 [scripts/README.md](scripts/README.md) 获取完整的打包指南
