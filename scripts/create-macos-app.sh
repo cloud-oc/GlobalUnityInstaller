@@ -29,6 +29,12 @@ mkdir -p "$APP_BUNDLE/Contents/Resources"
 echo "📋 复制文件..."
 cp -R "$PUBLISH_PATH/"* "$APP_BUNDLE/Contents/MacOS/"
 
+# 3.5 复制 icon
+if [ -f "assets/icon.png" ]; then
+    cp "assets/icon.png" "$APP_BUNDLE/Contents/Resources/icon.png"
+    echo "📌 Icon 已复制"
+fi
+
 # 4. 设置可执行权限
 chmod +x "$APP_BUNDLE/Contents/MacOS/$APP_NAME"
 
@@ -55,6 +61,8 @@ cat > "$APP_BUNDLE/Contents/Info.plist" << EOF
     <string>APPL</string>
     <key>CFBundleSignature</key>
     <string>????</string>
+    <key>CFBundleIconFile</key>
+    <string>icon</string>
     <key>LSMinimumSystemVersion</key>
     <string>10.15</string>
     <key>NSHighResolutionCapable</key>

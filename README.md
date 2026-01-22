@@ -1,39 +1,50 @@
+<div align="center">
+
+<img src="assets/icon.svg" width="128" height="128" alt="Global Unity Installer">
+
 # Global Unity Installer
 
-Global Unity Installer（简称GUI）是一个简洁的跨平台工具，通过注入代理设置启动 Unity Hub，解决在中国大陆等地区无法验证许可证、下载编辑器或连接服务的问题。
+**简称 GUI** - 一个简洁的跨平台工具，通过注入代理设置启动 Unity Hub
+
+解决在中国大陆等地区无法验证许可证、下载编辑器或连接服务的问题
+
+[快速开始](#-如何使用) • [功能特性](#-主要功能) • [下载](#-发布) • [文档](scripts/README.md)
+
+</div>
 
 ## ✨ 主要功能
 
-- **一键代理启动**：支持 HTTP 和 SOCKS5 代理，让 Unity Hub 正常联网。
-- **自动路径检测**：自动寻找 Unity Hub 安装位置，无需手动配置（也支持手动选择）。
-- **跨平台支持**：Windows、macOS 和 Linux 均可使用。
-- **多语言支持**：界面根据系统语言自动切换。
-> 本工具仅提供 64 位版本，**不支持 32 位系统**。
+- **🔗 一键代理启动** - 支持 HTTP 和 SOCKS5 代理，让 Unity Hub 正常联网
+- **🔍 自动路径检测** - 自动寻找 Unity Hub 安装位置，无需手动配置  
+- **🖥️ 跨平台支持** - Windows、macOS 和 Linux 均可使用
+- **🌍 多语言支持** - 界面根据系统语言自动切换
 
-## 🔗 Unity Hub 国际版下载
+> **注意** - 本工具仅提供 64 位版本，不支持 32 位系统
 
-Unity Hub 国际版下载：[https://www.nounitycn.top/unityhub](https://www.nounitycn.top/unityhub)
+## 🔗 下载 Unity Hub 国际版
 
-> 特别感谢 **NoUnityCN** 提供下载服务。  
-> ⚠️ **注意**：NoUnityCN 无法再在中国大陆 IP 环境下下载编辑器。
+[📥 https://www.nounitycn.top/unityhub](https://www.nounitycn.top/unityhub)
+
+> 特别感谢 **NoUnityCN** 提供下载服务  
+> ⚠️ NoUnityCN 无法再在中国大陆 IP 环境下下载编辑器
 
 ## 📦 如何使用
 
-> ⚠️ **重要提示**：在使用本工具启动 Unity Hub 之前，请确保**彻底关闭**现有的 Unity Hub 进程（包括系统托盘图标），否则代理注入可能不会生效。
+> **⚠️ 重要提示**：在使用本工具启动 Unity Hub 之前，请确保**彻底关闭**现有的 Unity Hub 进程（包括系统托盘图标），否则代理注入可能不会生效
 
 ### 方式一：下载可执行文件（推荐）
 
-1. 前往 [Releases](../../releases) 页面下载对应系统的压缩包。
-2. 解压后直接运行 `GlobalUnityInstaller`（Windows 为 `.exe`）。
+1. 前往 [Releases](../../releases) 页面下载对应系统的压缩包
+2. 解压后直接运行 `GlobalUnityInstaller`（Windows 为 `.exe`）
 
 ### 方式二：直接运行源码
 
-1. 确保已安装 [.NET SDK 8.0](https://dotnet.microsoft.com/download) 或更高版本。
-2. 在项目根目录 `src` 下运行：
+1. 确保已安装 [.NET SDK 8.0](https://dotnet.microsoft.com/download) 或更高版本
+2. 在项目根目录运行：
    ```bash
-   dotnet run
+   dotnet run --project src/GlobalUnityInstaller.csproj
    ```
-3. 输入本地代理端口（如 `7890`），点击启动即可。
+3. 输入本地代理端口（如 `7890`），点击启动即可
 
 ### 方式三：自行编译
 
@@ -118,3 +129,34 @@ tar czf GlobalUnityInstaller-linux-x64.tar.gz -C src/bin/Release/net8.0/linux-x6
 </details>
 
 > 📖 **详细打包说明**：请参阅 [scripts/README.md](scripts/README.md) 获取完整的打包指南
+
+---
+
+## 📁 项目结构
+
+```
+GlobalUnityInstaller/
+├── assets/              # 应用资源
+│   ├── icon.svg        # SVG icon
+│   └── icon.ico        # Windows icon
+├── scripts/            # 打包脚本
+│   ├── create-macos-app.ps1       # Windows 上创建 macOS .app
+│   ├── create-macos-app.sh        # macOS 上发布和打包 .app
+│   ├── create-linux-appimage.sh   # Linux 上创建 AppImage
+│   ├── create-linux-package.ps1   # Linux 简易打包脚本
+│   ├── publish-all.ps1            # 一键发布所有平台
+│   └── README.md                  # 详细打包指南
+├── src/               # 源代码
+├── GlobalUnityInstaller.sln
+└── README.md         # 项目文档
+```
+
+## 📝 许可证
+
+[MIT License](LICENSE)
+
+<div align="center">
+
+**[⬆ 回到顶部](#global-unity-installer)**
+
+</div>

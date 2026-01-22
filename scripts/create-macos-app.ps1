@@ -32,6 +32,12 @@ foreach ($Dir in $Dirs) {
 Write-Host "复制文件..." -ForegroundColor Yellow
 Copy-Item -Path "$PublishPath/*" -Destination "$AppBundle/Contents/MacOS/" -Recurse -Force
 
+# 2.5 复制 icon
+if (Test-Path "assets/icon.png") {
+    Copy-Item -Path "assets/icon.png" -Destination "$AppBundle/Contents/Resources/icon.png" -Force
+    Write-Host "复制 Icon..." -ForegroundColor Yellow
+}
+
 # 3. 创建 Info.plist
 $InfoPlist = @"
 <?xml version="1.0" encoding="UTF-8"?>
@@ -54,6 +60,8 @@ $InfoPlist = @"
     <string>APPL</string>
     <key>CFBundleSignature</key>
     <string>????</string>
+    <key>CFBundleIconFile</key>
+    <string>icon</string>
     <key>LSMinimumSystemVersion</key>
     <string>10.15</string>
     <key>NSHighResolutionCapable</key>

@@ -4,7 +4,7 @@
 
 ## 📦 Windows
 
-Windows 已配置单文件发布，无需额外打包脚本。
+Windows 已配置单文件发布，自动使用 `assets/icon.ico` 作为应用图标。
 
 **发布命令：**
 ```powershell
@@ -19,6 +19,8 @@ dotnet publish src/GlobalUnityInstaller.csproj -c Release -r win-x64 --self-cont
   ```powershell
   Compress-Archive -Path "src/bin/Release/net8.0/win-x64/publish/GlobalUnityInstaller.exe" -DestinationPath "GlobalUnityInstaller-win-x64.zip"
   ```
+
+**Icon：** 已自动嵌入 exe 文件，用户可在文件管理器中看到应用图标
 
 ---
 

@@ -1,0 +1,25 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="256" height="256" fill="#1f1f1f" rx="56"/>
+  
+  <!-- 外层立方体轮廓 -->
+  <g stroke="#ffffff" stroke-width="8" fill="none" stroke-linejoin="round">
+    <!-- 前面立方体 -->
+    <path d="M 80 100 L 128 70 L 176 100 L 128 130 Z"/>
+    <!-- 左面立方体 -->
+    <path d="M 80 100 L 128 130 L 128 186 L 80 156 Z"/>
+    <!-- 右面立方体 -->
+    <path d="M 176 100 L 128 130 L 128 186 L 176 156 Z"/>
+  </g>
+  
+  <!-- 内部高亮 - 彩色渐变效果 -->
+  <g opacity="0.3">
+    <polygon points="128,70 176,100 128,130" fill="#FF6B6B"/>
+    <polygon points="80,100 128,130 128,186" fill="#4ECDC4"/>
+    <polygon points="176,100 128,130 128,186" fill="#45B7D1"/>
+  </g>
+  
+  <!-- 中心圆圈装饰 -->
+  <circle cx="128" cy="128" r="18" fill="none" stroke="#ffffff" stroke-width="3"/>
+  <circle cx="128" cy="128" r="8" fill="#ffffff" opacity="0.6"/>
+</svg>

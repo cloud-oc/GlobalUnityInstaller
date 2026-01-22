@@ -5,6 +5,7 @@
     <RollForward>LatestMajor</RollForward>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>../assets/icon.ico</ApplicationIcon>
     
     <!-- Distribution Optimization -->
     <PublishTrimmed>true</PublishTrimmed>
