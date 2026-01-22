@@ -8,8 +8,6 @@
 
 解决在中国大陆等地区无法验证许可证、下载编辑器或连接服务的问题
 
-[快速开始](#-如何使用) • [功能特性](#-主要功能) • [下载](#-发布) • [文档](scripts/README.md)
-
 </div>
 
 ## ✨ 主要功能
@@ -155,7 +153,7 @@ GlobalUnityInstaller/
 
 [MIT License](LICENSE)
 
-<div align="center">
+<div align="right">
 
 **[⬆ 回到顶部](#global-unity-installer)**
 
