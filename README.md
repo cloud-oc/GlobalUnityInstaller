@@ -8,6 +8,7 @@
 
 解决在中国大陆等地区无法验证许可证、下载编辑器或连接服务的问题
 
+![Downloads](https://img.shields.io/github/downloads/cloud-oc/globalunityinstaller/total.svg)
 </div>
 
 ## ✨ 主要功能
