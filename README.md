@@ -43,7 +43,6 @@
    ```bash
    dotnet run --project src/GlobalUnityInstaller.csproj
    ```
-3. 输入本地代理端口（这要和你的系统代理端口一致，7890通常是clash客户端默认使用的HTTP代理端口），点击启动即可
 
 ### 方式三：自行编译
 
