@@ -22,14 +22,37 @@
 
 ## 🔗 下载 Unity Hub 国际版
 
-[📥 https://www.nounitycn.top/unityhub](https://www.nounitycn.top/unityhub)
+[📥 下载入口](https://www.nounitycn.top/unityhub)
 
 > 特别感谢 **NoUnityCN** 提供下载服务  
 > ⚠️ NoUnityCN 无法再在中国大陆 IP 环境下下载编辑器
 
 ## 📦 如何使用
 
+[🎞️ 视频教程](https://www.bilibili.com/video/BV13SztBcE5f)
+
 > **⚠️ 重要提示**：在使用本工具启动 Unity Hub 之前，请确保**彻底关闭**现有的 Unity Hub 进程（包括系统托盘图标），否则代理注入可能不会生效
+
+### 🔧 代理配置说明
+
+本工具需要配合代理软件使用，这里推荐使用 [Sparkle](https://github.com/xishang0128/sparkle)，如果你使用的是其他类型的代理工具，思路同理。
+
+**获取 Sparkle 代理端口：**
+1. 打开 Sparkle 客户端
+2. 点击 **内核设置** > **端口设置**
+3. 查看代理端口（默认为 `7890`）
+
+**使用步骤：**
+1. 确保 Sparkle 正在运行并已连接节点
+2. 完全关闭 Unity Hub（包括系统托盘图标）
+3. 启动 `GlobalUnityInstaller`，填入代理地址
+4. 点击启动按钮，Unity Hub 将通过代理运行
+
+> 💡 **提示**：代理设置是临时注入的，每次启动 Unity Hub 都需要通过本工具
+
+
+
+---
 
 ### 方式一：下载可执行文件（推荐）
 
@@ -46,7 +69,7 @@
 
 ### 方式三：自行编译
 
-**快速发布所有平台：**
+**快速编译到所有平台：**
 ```powershell
 .\scripts\publish-all.ps1 -CreatePackages
 ```
@@ -138,11 +161,13 @@ dotnet publish src/GlobalUnityInstaller.csproj -c Release -r linux-x64 --self-co
 tar czf GlobalUnityInstaller-linux-x64.tar.gz -C src/bin/Release/net8.0/linux-x64/publish .
 ```
 
-产物：`.AppImage` 单文件或 `GlobalUnityInstaller-linux-x64scripts/README.md](scripts/README.md) 获取完整的打包指南
+产物：`.AppImage` 单文件或 `GlobalUnityInstaller-linux-x64.tar.gz`
+
+> 详见 [scripts/README.md](scripts/README.md) 获取完整的打包指南
 
 ---
 
-## 📁 项目结构
+##  项目结构
 
 ```
 GlobalUnityInstaller/
