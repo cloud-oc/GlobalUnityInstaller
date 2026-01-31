@@ -180,8 +180,7 @@ tar czf GlobalUnityInstaller-linux-x64.tar.gz -C src/bin/Release/net8.0/linux-x6
 
 ### 为什么需要 GUI？
 
-在中国大陆地区使用 **Unity Hub 国际版**时，用户常遇到以下问题：
-- **许可证无法验证**：启动时提示“无法连接到服务器”，导致无法激活许可证。
+在中国大陆地区使用 **Unity Hub 国际版**时，容易遇到以下问题：
 - **登录状态丢失**：无法同步 Unity 账号信息。
 - **资源下载失败**：下载编辑器时进度条不动，或报“验证失败”。
 
